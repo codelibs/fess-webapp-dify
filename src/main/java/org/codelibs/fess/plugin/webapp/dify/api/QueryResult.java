@@ -23,6 +23,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.codelibs.core.lang.StringUtil;
 import org.codelibs.fess.entity.SearchRenderData;
 import org.codelibs.fess.mylasta.direction.FessConfig;
+import org.codelibs.fess.plugin.webapp.dify.Constants;
 import org.codelibs.fess.util.ComponentUtil;
 
 public class QueryResult {
@@ -41,7 +42,7 @@ public class QueryResult {
 
     public static QueryResult create(final QueryRequest query, final SearchRenderData data) {
         final FessConfig fessConfig = ComponentUtil.getFessConfig();
-        final int maxTextLength = Integer.getInteger("fess.dify.doc.max_length", 5000);
+        final int maxTextLength = Integer.getInteger(Constants.FESS_DIFY_DOC_MAX_LENGTH, 5000);
 
         final QueryResult queryResult = new QueryResult();
 

@@ -19,9 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.codelibs.core.lang.StringUtil;
+import org.codelibs.fess.plugin.webapp.dify.Constants;
 import org.codelibs.fess.plugin.webapp.dify.exception.InvalidRequestParameterException;
 
 public class QueryRequest {
+
+    private static final String PUNCT = "[\\p{P}\\p{IsPunctuation}]";
 
     public static final String QUERY = "fess.dify.Query";
 
@@ -34,6 +37,9 @@ public class QueryRequest {
     public static QueryRequest create(final HttpServletRequest request) {
         final QueryRequest queryRequest = new QueryRequest();
         queryRequest.query = request.getParameter("query");
+        if (Constants.TRUE.equalsIgnoreCase(System.getProperty(Constants.FESS_DIFY_QUERY_NORMALIZATION))) {
+            queryRequest.query = queryRequest.query.replaceAll(PUNCT, " ");
+        }
         final String topKValue = request.getParameter("top_k");
         if (StringUtil.isNotBlank(topKValue)) {
             try {

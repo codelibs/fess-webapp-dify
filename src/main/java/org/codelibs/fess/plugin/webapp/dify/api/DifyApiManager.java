@@ -39,7 +39,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codelibs.core.io.ResourceUtil;
 import org.codelibs.core.lang.StringUtil;
-import org.codelibs.fess.Constants;
 import org.codelibs.fess.api.BaseApiManager;
 import org.codelibs.fess.entity.FacetInfo;
 import org.codelibs.fess.entity.GeoInfo;
@@ -48,6 +47,7 @@ import org.codelibs.fess.entity.SearchRenderData;
 import org.codelibs.fess.entity.SearchRequestParams;
 import org.codelibs.fess.exception.InvalidAccessTokenException;
 import org.codelibs.fess.helper.SearchHelper;
+import org.codelibs.fess.plugin.webapp.dify.Constants;
 import org.codelibs.fess.util.ComponentUtil;
 import org.dbflute.optional.OptionalThing;
 import org.lastaflute.web.util.LaResponseUtil;
@@ -57,10 +57,6 @@ public class DifyApiManager extends BaseApiManager {
     private static final Logger logger = LogManager.getLogger(DifyApiManager.class);
 
     protected static final String MIMETYPE_JSON = "application/json";
-
-    protected static final String FESS_DIFY_OPENAPI_URL = "fess.dify.openapi.url";
-
-    protected static final String FESS_DIFY_RESPONSE_FIELDS = "fess.dify.response_fields";
 
     protected static final String LOCALHOST_URL = "http://localhost:8080";
 
@@ -122,7 +118,7 @@ public class DifyApiManager extends BaseApiManager {
     }
 
     protected String[] getResponseFields() {
-        return System.getProperty(FESS_DIFY_RESPONSE_FIELDS, "url,timestamp,doc_id,content").split(",");
+        return System.getProperty(Constants.FESS_DIFY_RESPONSE_FIELDS, "url,timestamp,doc_id,content").split(",");
     }
 
     protected void processOpenApiYaml(final HttpServletRequest request, final HttpServletResponse response) {
@@ -134,7 +130,7 @@ public class DifyApiManager extends BaseApiManager {
                 buf.append(line).append('\n');
             }
 
-            final String url = System.getProperty(FESS_DIFY_OPENAPI_URL, LOCALHOST_URL + "/dify");
+            final String url = System.getProperty(Constants.FESS_DIFY_OPENAPI_URL, LOCALHOST_URL + "/dify");
             response.setStatus(HttpServletResponse.SC_OK);
             write(buf.toString().replace(LOCALHOST_URL + "/dify", url), "application/x-yaml", Constants.UTF_8);
         } catch (final Exception e) {
